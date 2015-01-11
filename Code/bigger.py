@@ -1,8 +1,6 @@
 from astropy.io import fits
 import numpy
 
-minFilter = .5
-
 originalData, header = fits.getdata("../FITS/frame-i-007907-6-0143.fits", header=True)
 
 width = header["NAXIS1"]
@@ -10,9 +8,17 @@ height = header["NAXIS2"]
 data = numpy.ndarray(shape=(height,width), dtype=float, order='F')
 
 prom = 0
+maxv = -999999999
 for i in xrange(0,height):
 	for j in xrange(0,width):
-		# prom += originalData[i,j]/(height*width)
+		prom += originalData[i,j]/(height*width)
+		if originalData[i,j] > maxv:
+			maxv = originalData[i,j]
+
+minFilter = prom
+
+for i in xrange(0,height):
+	for j in xrange(0,width):
 		if originalData[i,j] > minFilter:
 			data[i,j] = originalData[i,j]
 
