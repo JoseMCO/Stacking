@@ -1,24 +1,23 @@
 from astropy.io import fits
-import numpy
+import numpy as np
 import glob
 
-def crop (originalData):
+def cropAux (originalData):
 
 	height = len(originalData)
 	width = len(originalData[0])
-	data = numpy.ndarray(shape=(height,width), dtype=float)
+	data = np.ndarray(shape=(height,width), dtype=float)
 
 	prom = originalData.mean(axis=1, dtype=float).mean()
 
 	minFilter = prom
-	print minFilter
+	
 	for i in xrange(0,height):
 		for j in xrange(0,width):
 			if originalData[i,j] > minFilter:
 				data[i,j] = originalData[i,j]
 			else:
 				data[i,j] = -1
-
 
 	maxv = -999999999999
 	# se suman al pixel actual los valores de todos los pixeles contiguos y se guarda el maximo valor
@@ -83,7 +82,7 @@ def crop (originalData):
 	newHeight = maxy - miny
 	newWidth = maxx - minx
 
-	newdata = numpy.ndarray(shape=(newHeight+1,newWidth+1), dtype=float)
+	newdata = np.ndarray(shape=(newHeight+1,newWidth+1), dtype=float)
 
 	for i in xrange(miny,maxy+1): 
 		for j in xrange(minx,maxx+1):
@@ -94,49 +93,49 @@ def crop (originalData):
 
 	return newdata
 
+def crop(dir):
+	data = glob.glob(dir)
+	print data
+	for i in xrange(0,len(data)):
+		name = data[i].split('/')[-1].split('.')[0]
+		print i, name, data[i]
+		data[i] = cropAux(fits.getdata(data[i]))
+		fits.writeto('../FITS/output_'+str(name)+'a.fits', data[i], clobber=True)
 
-# data = glob.glob("../FITS/Inputs/*.fits")
 
-# for i in xrange(0,len(data)):
-# 	name = data[i][-12:-5]
-# 	print i, name
-# 	data[i] = crop(fits.getdata(data[i]))
-# 	fits.writeto('../FITS/output_'+str(name)+'a.fits', data[i], clobber=True)
+	# data = glob.glob("../FITS/I/*.fits")
 
+	# for i in xrange(0,len(data)):
+	# 	print data[i], i
+	# 	data[i] = fits.getdata(data[i])
 
-data = glob.glob("../FITS/I/*.fits")
+	# height = width = -1
+	# maxs = []
+	# for x in xrange(0,len(data)):
+	# 	h = len(data[x])
+	# 	w = len(data[x][0])
+	# 	xmax = ymax = vmax = -1;
+	# 	for i in xrange(0,h):
+	# 		for j in xrange(0,w):
+	# 			if data[x][i,j] > vmax:
+	# 				ymax = i
+	# 				xmax = j
+	# 				vmax = data[x][i,j]
+	# 	maxs.append([ymax, xmax])
+	# 	h = ymax*2+1 if ( abs(ymax-h) < ymax ) else abs(ymax-h)*2+1
+	# 	w = xmax*2+1 if ( abs(xmax-h) < xmax ) else abs(xmax-h)*2+1
+	# 	if height < h:
+	# 		height = h
+	# 	if width < w:
+	# 		width = w
 
-for i in xrange(0,len(data)):
-	print data[i], i
-	data[i] = fits.getdata(data[i])
+	# newdata = np.ndarray(shape=(height,width), dtype=float)
 
-height = width = -1
-maxs = []
-for x in xrange(0,len(data)):
-	h = len(data[x])
-	w = len(data[x][0])
-	xmax = ymax = vmax = -1;
-	for i in xrange(0,h):
-		for j in xrange(0,w):
-			if data[x][i,j] > vmax:
-				ymax = i
-				xmax = j
-				vmax = data[x][i,j]
-	maxs.append([ymax, xmax])
-	h = ymax*2+1 if ( abs(ymax-h) < ymax ) else abs(ymax-h)*2+1
-	w = xmax*2+1 if ( abs(xmax-h) < xmax ) else abs(xmax-h)*2+1
-	if height < h:
-		height = h
-	if width < w:
-		width = w
+	# h = (height-1)/2
+	# w = (width-1)/2
+	# for x in xrange(0,len(data)):
+	# 	for i in xrange(0,len(data[x])):
+	# 		for j in xrange(0,len(data[x][0])):
+	# 			newdata[i+(h-maxs[x][0])/2,j+(w-maxs[x][1])/2] += data[x][i,j] 
 
-newdata = numpy.ndarray(shape=(height,width), dtype=float)
-
-h = (height-1)/2
-w = (width-1)/2
-for x in xrange(0,len(data)):
-	for i in xrange(0,len(data[x])):
-		for j in xrange(0,len(data[x][0])):
-			newdata[i+(h-maxs[x][0])/2,j+(w-maxs[x][1])/2] += data[x][i,j] 
-
-fits.writeto('../FITS/output_file.fits', newdata, clobber=True)
+	# fits.writeto('../FITS/output_file.fits', newdata, clobber=True)
