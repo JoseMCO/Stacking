@@ -4,8 +4,9 @@ import glob
 
 import crop as cr
 import rotate as rt
+import align as al
 
-#cr.crop("../FITS/Inputs/image*.fits")
-
-data = fits.getdata("../FITS/Inputs/image0.fits")
-fits.writeto('../FITS/output_file.fits', rt.rotate_image(data, 45), clobber=True)
+# data = fits.getdata("../FITS/Inputs/image0.fits")
+# cr.crop("../FITS/Inputs/image*.fits")
+al.align("image",4)
+# fits.writeto('../FITS/output_file.fits', rt.rotate_image(data, 45), clobber=True)
