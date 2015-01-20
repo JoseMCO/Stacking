@@ -14,7 +14,7 @@ def escalar(matriz, NAXIS1, NAXIS2, razon):
         matriz_final = np.zeros((round((NAXIS1-1)*razon+1),round((NAXIS2-1)*razon+1)))
         for x in range(NAXIS1):
             for y in range(NAXIS2):
-                matriz_final[round(x*razon)][round(y*razon)] = matriz[x][y]
+                matriz_final[round(x*razon)][round(y*razon)] = matriz[y][x]
         return matriz_final
     else:
         # ----------- A G R A N D A R   I M A G E N ------------
