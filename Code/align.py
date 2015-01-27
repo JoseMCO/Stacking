@@ -39,18 +39,21 @@ def align(name,nimages):
 	for i in xrange(0,nimages):
 
 		# dataBigger[i] = DataWH[i] #guarda la posicion de la foto mas grande en orden descendente
-		data[i],header[i] = fits.getdata("../FITS/output_"+name + str(i) +"a.fits",header=True)
-		newData = es.escalar(data[i],header[i]['NAXIS1'],header[i]['NAXIS2'],difsize(maxHeight,header[i]['NAXIS2']))
+		data,header = fits.getdata("../FITS/output_"+name + str(i) +"a.fits",header=True)
+		newData = es.escalar(data,header['NAXIS1'],header['NAXIS2'],difsize(maxHeight,header['NAXIS2']))
 
-		print maxHeight
-		print header[i]['NAXIS2']
-		print difsize(maxHeight,header[i]['NAXIS2'])
+		# print maxHeight
+		# print header[i]['NAXIS2']
+		# print difsize(maxHeight,header[i]['NAXIS2'])
 		# #newData = resize(data[i],maxWidth,maxHeight,header[i]['NAXIS1'],header[i]['NAXIS2'])
 		# # print newData
 		# # header[i]['NAXIS1'] = maxWidth
 		# # header[i]['NAXIS2'] = maxHeight
-		fits.writeto("../FITS/Outputs/output_"+name+str(i)+"b.fits", newData,header[i] ,clobber=True)
-
+		if newData.shape[0] > maxHeight:
+			fits.writeto("../FITS/Outputs/output_"+name+str(i)+"b.fits", rt.rotate_image(newData, 270),header ,clobber=True)
+		else:
+			fits.writeto("../FITS/Outputs/output_"+name+str(i)+"b.fits", newData,header ,clobber=True)
+			
 	st.stacking(name,nimages,maxHeight,maxWidth)
 	# for i in xrange(0,nimages):
 
