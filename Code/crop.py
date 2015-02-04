@@ -93,14 +93,15 @@ def cropAux (originalData):
 
 	return newdata
 
-def crop(dir,numimage):
-	data = glob.glob(dir)
+def crop(inputDir, outputDir):
+	data = glob.glob(inputDir+'/*.fits')
 	print data
 	for i in xrange(0,len(data)):
 		name = data[i].split('/')[-1].split('.')[0]
-		print i, name, data[i]
-		data[i] = cropAux(fits.getdata(data[i]))
-		fits.writeto('../FITS/Outputs/output_'+str(name)+'.fits', data[i], clobber=True)
+		image = fits.getdata(data[i])
+		fits.writeto(outputDir+'/Img_0_'+str(i)+'.fits',image, clobber=True)
+		image = cropAux(image)
+		fits.writeto(outputDir+'/Img_1_'+str(i)+'.fits',image, clobber=True)
 
 
 	# data = glob.glob("../FITS/I/*.fits")
