@@ -34,17 +34,17 @@ class GUI(Frame):
 
         inputLabel = Label(iFrame, text="Input Directory:")
         inputLabel.pack(side=LEFT, padx=10)
-        inputEntry = Entry(iFrame, width=50)
-        inputEntry.pack(side=LEFT, padx=5)
-        inputButton = Button(iFrame, text="Choose", command=lambda:self.chooseDir(inputEntry,0))
-        inputButton.pack(side=LEFT, padx=5)
+        inputDirLabel = Label(iFrame, text="No selected")
+        inputDirLabel.pack(side=LEFT, padx=5)
+        inputButton = Button(iFrame, text="Choose", command=lambda:self.chooseDir(inputDirLabel,0))
+        inputButton.pack(side=RIGHT, padx=5)
 
         outputLabel = Label(oFrame, text="Output Directory:")
         outputLabel.pack(side=LEFT, padx=5)
-        outputEntry = Entry(oFrame, width=50)
-        outputEntry.pack(side=LEFT, padx=5)
-        outputButton = Button(oFrame, text="Choose", command=lambda:self.chooseDir(outputEntry,1))
-        outputButton.pack(side=LEFT, padx=5)
+        outputDirLabel = Label(oFrame, text="No selected")
+        outputDirLabel.pack(side=LEFT, padx=5)
+        outputButton = Button(oFrame, text="Choose", command=lambda:self.chooseDir(outputDirLabel,1))
+        outputButton.pack(side=RIGHT, padx=5)
         warningLabel = Label(self, text="Warning: The output directory's content will be deleted!")
         warningLabel.pack(side=LEFT, padx=5)
 
@@ -54,11 +54,10 @@ class GUI(Frame):
         okButton.pack(side=RIGHT)
 
     def chooseDir(self,entry,inout):
-        dirname = tkFileDialog.askdirectory(parent=self,initialdir="/",title='Please select a directory')
+        dirname = tkFileDialog.askdirectory(parent=self,initialdir=".",title='Please select a directory')
         if len(dirname ) > 0:
             print "You chose %s" % dirname 
-            entry.delete(0,END)
-            entry.insert(0,dirname)
+            entry["text"] = dirname
             if inout == 0:
                 self.inputDir = dirname
             else:
