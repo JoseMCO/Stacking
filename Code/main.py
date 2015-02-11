@@ -5,7 +5,10 @@ import os
 
 import crop as cr
 import rotate as rt
+import scale as sc
 import align as al
+import stacking as st
+import compare as cm
 
 
 def stack(inputDir,outputDir):
@@ -19,6 +22,19 @@ def stack(inputDir,outputDir):
 		except Exception, e:
 			print e
 	cr.crop(inputDir, outputDir)
+	# ro.rotate(outputDir)
+	# sc.scale(outputDir)
+	# al.align(outputDir)
+	# st.stacking(outputDir)
+
+def aux(inputDir,outputDir):
+	data = glob.glob(inputDir+'/*.fits')
+	print data
+	print "1", data[0].split('/')[-1].split('.')[0]
+	image1 = fits.getdata(data[0])
+	print "2", data[1].split('/')[-1].split('.')[0]
+	image2 = fits.getdata(data[1])
+	cm.compare(image1, image2)
 	
 # data = [0]*4
 # header =[0]*4
