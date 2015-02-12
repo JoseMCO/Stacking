@@ -21,9 +21,9 @@ def stack(inputDir,outputDir):
 				os.unlink(file_path)
 		except Exception, e:
 			print e
-	cr.crop(inputDir, outputDir)
-	# ro.rotate(outputDir)
-	# sc.scale(outputDir)
+	border = cr.crop(inputDir, outputDir)
+	maxSize = rt.rotate(outputDir, border)
+	sc.scale(outputDir, maxSize)
 	# al.align(outputDir)
 	# st.stacking(outputDir)
 
@@ -48,3 +48,5 @@ def aux(inputDir,outputDir):
 # al.align("image",4)
 
 # fits.writeto('../FITS/output_file.fits', rt.rotate_image(data, 45), clobber=True)
+
+# stack("/home/jose/Documents/LIRAE/Practica/stacking/FITS/Inputs/B","/home/jose/Documents/LIRAE/Practica/stacking/FITS/Outputs")

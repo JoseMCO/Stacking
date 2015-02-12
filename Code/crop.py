@@ -114,23 +114,25 @@ def cropAux (originalData):
 		if len(line) > 1:
 			border.append(line[-1])
 
-	# for i in xrange(0,len(border)):
-	# 	newdata[border[i][0],border[i][1]] = 1000
-
 	return border, newdata
 
 def crop(inputDir, outputDir):
 	data = glob.glob(inputDir+'/*.fits')
-	print data
+	borders = []
 	for i in xrange(0,len(data)):
 	# for i in xrange(0,1):
 		name = data[i].split('/')[-1].split('.')[0]
 		image = fits.getdata(data[i])
 		if isinstance(image, list):
 			image = image[0]
+
+		print "Crop: "+'/Img_0_'+str(i)+'.fits'
+
 		fits.writeto(outputDir+'/Img_0_'+str(i)+'.fits',image, clobber=True)
 		border, image = cropAux(image)
 		fits.writeto(outputDir+'/Img_1_'+str(i)+'.fits',image, clobber=True)
+		borders.append(border)
+	return borders
 
 
 	# data = glob.glob("../FITS/I/*.fits")

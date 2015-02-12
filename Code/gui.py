@@ -54,7 +54,7 @@ class GUI(Frame):
         okButton.pack(side=RIGHT)
 
     def chooseDir(self,entry,inout):
-        dirname = tkFileDialog.askdirectory(parent=self,initialdir="./FITS",title='Please select a directory')
+        dirname = tkFileDialog.askdirectory(parent=self,initialdir=".",title='Please select a directory')
         if len(dirname ) > 0:
             print "You chose %s" % dirname 
             entry["text"] = dirname

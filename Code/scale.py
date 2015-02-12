@@ -1,8 +1,10 @@
 import numpy as np
 import math
 import info_imagen
+from astropy.io import fits
+import glob
 
-def escalar(matriz, NAXIS1, NAXIS2, razon):
+def scale_aux(matriz, NAXIS1, NAXIS2, razon):
     
     # ------- S I  R A Z O N  E S   1  N O   S E   E S C A L A --------
     if (razon == 1):
@@ -66,6 +68,19 @@ def escalar(matriz, NAXIS1, NAXIS2, razon):
         x = x + razon
     
     return matriz_final
+
+def scale(outputDir, maxSize):
+    data = sorted(glob.glob(outputDir+'/Img_2_*.fits'))
+    print data
+    for i in xrange(0,len(data)):
+        image = fits.getdata(data[i])
+        h,w = image.shape
+        r = (maxSize[0]*maxSize[1])/(h*w) # NO SE COMO SE CALCULA :C
+
+        print "Scale: "+'/Img_2_'+str(i)+'.fits'
+
+        image = scale_aux(image,h,w,r)
+        fits.writeto(outputDir+'/Img_3_'+str(i)+'.fits',image, clobber=True)
 
 
 # import numpy as np
