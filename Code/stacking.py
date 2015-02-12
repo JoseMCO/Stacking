@@ -2,8 +2,9 @@ from astropy.io import fits
 import numpy as np
 import math
 
-def stacking(name,nimages,maxHeight,maxWidth):
+def stacking(nimages,maxHeight,maxWidth,outputDir):
 
+	image = sorted(glob.glob(outputDir+'/Img_4_*.fits'))
 	data = []
 	header = []
 	finalData = np.zeros((maxWidth,maxHeight))
@@ -11,7 +12,7 @@ def stacking(name,nimages,maxHeight,maxWidth):
 
 	for i in range(nimages):
 
-		data, header = fits.getdata("../FITS/Outputs/output_"+name + str(i) +"b.fits",header=True)
+		data, header = fits.getdata(image[i],header=True)
 
 		if header['NAXIS1'] > maxWidth and header['NAXIS2'] > maxHeight:
 		
@@ -45,4 +46,4 @@ def stacking(name,nimages,maxHeight,maxWidth):
 
 			finalData[x][y] = float(finalData[x][y]/nimages)
 
-	fits.writeto('../FITS/Outputs/final_output.fits', finalData, clobber=True)
+	fits.writeto(outputDir+'/Img_5_final.fits', finalData, clobber=True)
