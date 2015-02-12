@@ -75,7 +75,7 @@ def scale(outputDir, maxSize):
     for i in xrange(0,len(data)):
         image = fits.getdata(data[i])
         h,w = image.shape
-        r = (maxSize[0]*maxSize[1])/(h*w) # NO SE COMO SE CALCULA :C
+        r = float((maxSize[0]*maxSize[1]))/float((h*w)) # NO SE COMO SE CALCULA :C
 
         print "Scale: "+'/Img_2_'+str(i)+'.fits'
 
