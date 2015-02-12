@@ -1,16 +1,18 @@
 from astropy.io import fits
 import numpy as np
 import math
+import glob
 
-def stacking(nimages,maxHeight,maxWidth,outputDir):
+def stacking(maxHeight,maxWidth,outputDir):
 
 	image = sorted(glob.glob(outputDir+'/Img_4_*.fits'))
+	length = len(image)
 	data = []
 	header = []
 	finalData = np.zeros((maxWidth,maxHeight))
 
 
-	for i in range(nimages):
+	for i in range(length):
 
 		data, header = fits.getdata(image[i],header=True)
 
@@ -44,6 +46,7 @@ def stacking(nimages,maxHeight,maxWidth,outputDir):
 	for x in range(maxWidth):
 		for y in range(maxHeight):
 
-			finalData[x][y] = float(finalData[x][y]/nimages)
+			finalData[x][y] = float(finalData[x][y]/length)
 
+	print "Stack: Done."	
 	fits.writeto(outputDir+'/Img_5_final.fits', finalData, clobber=True)
