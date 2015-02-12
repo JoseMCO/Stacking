@@ -4,6 +4,7 @@ import crop as cr
 import rotate as rt
 import scale as sc
 import stacking as st
+import glob
 
 def align(outputDir):
 
@@ -42,13 +43,15 @@ def align(outputDir):
 		newData = sc.scale_aux(imageData,header['NAXIS1'],header['NAXIS2'],difsize(maxWidth,header['NAXIS1'],maxHeight,header['NAXIS2']))
 
 		if newData.shape[0] > maxHeight:
+			print "Aling: "+'/Img_3_'+str(i)+'.fits'
 			fits.writeto(outputDir+'/Img_4'+str(i)+'.fits', rt.rotate_image(newData, 270),header ,clobber=True)
 		else:
+			print "Aling: "+'/Img_3_'+str(i)+'.fits'
 			fits.writeto(outputDir+'/Img_4'+str(i)+'.fits', newData,header ,clobber=True)
 			
 	# st.stacking(len(data),maxHeight,maxWidth,inputDir,outputDir)
 	# for i in xrange(0,nimages):
-	info = [len(data),maxHeight,maxWidth]
+	info = [maxHeight,maxWidth]
 	return info
 	# 	fits.writeto("../FITS/output_"+name+str(i)+"b.fits", rt.rotate_image(data[i], 45), clobber=True)
 

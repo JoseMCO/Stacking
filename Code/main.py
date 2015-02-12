@@ -25,7 +25,7 @@ def stack(inputDir,outputDir):
 	maxSize = rt.rotate(outputDir, border)
 	sc.scale(outputDir, maxSize)
 	info = al.align(outputDir)
-	st.stacking(info[0],info[1],info[2],outputDir)
+	st.stacking(info[0],info[1],outputDir)
 
 def aux(inputDir,outputDir):
 	data = glob.glob(inputDir+'/*.fits')
