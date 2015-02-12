@@ -9,6 +9,8 @@ def cropAux (originalData):
 	data = np.ndarray(shape=(height,width), dtype=float)
 
 	prom = originalData.mean(axis=1, dtype=float).mean()
+	total = 0
+	ntotal = 0
 
 	minFilter = prom
 	
@@ -16,8 +18,12 @@ def cropAux (originalData):
 		for j in xrange(0,width):
 			if originalData[i,j] > minFilter:
 				data[i,j] = originalData[i,j]
+				total+=originalData[i,j]
+				ntotal+=1
 			else:
 				data[i,j] = -1
+
+	minFilter = total/ntotal
 
 	maxv = -999999999999
 	# se suman al pixel actual los valores de todos los pixeles contiguos y se guarda el maximo valor
@@ -48,12 +54,19 @@ def cropAux (originalData):
 
 	maxy = maxx = -1
 	miny = minx = width+height
+
+	total = 0
+	ntotal = 0
+	
 	# al grupo que contiene el pixel con el mayor valor, se le setea el mayor valor
 	for i in xrange(height-1,-1,-1):
 		for j in xrange(width-1,-1,-1):
 			if data[i,j] < maxv:
 				continue
-			tmp = minFilter
+			
+			total+=originalData[i,j]
+			ntotal+=1
+
 			if i > 0 and data[i-1,j] > minFilter: #abajo
 				data[i-1,j] = maxv
 			if i < height-1 and data[i+1,j] > minFilter: #arriba
@@ -79,28 +92,44 @@ def cropAux (originalData):
 			if j > maxx:
 				maxx = j
 
+	minFilter = total/ntotal
+
 	newHeight = maxy - miny
 	newWidth = maxx - minx
 
 	newdata = np.ndarray(shape=(newHeight+1,newWidth+1), dtype=float)
 
+	border = []
 	for i in xrange(miny,maxy+1): 
+		line = []
 		for j in xrange(minx,maxx+1):
-			if originalData[i,j] < minFilter:
+			if data[i,j] < maxv or originalData[i,j] < minFilter:
 				newdata[i-miny, j-minx] = 0
 			else:
 				newdata[i-miny, j-minx] = originalData[i,j]
+				line.append((i-miny, j-minx))
 
-	return newdata
+		if len(line) > 0:
+			border.append(line[0])
+		if len(line) > 1:
+			border.append(line[-1])
+
+	# for i in xrange(0,len(border)):
+	# 	newdata[border[i][0],border[i][1]] = 1000
+
+	return border, newdata
 
 def crop(inputDir, outputDir):
 	data = glob.glob(inputDir+'/*.fits')
 	print data
 	for i in xrange(0,len(data)):
+	# for i in xrange(0,1):
 		name = data[i].split('/')[-1].split('.')[0]
 		image = fits.getdata(data[i])
+		if isinstance(image, list):
+			image = image[0]
 		fits.writeto(outputDir+'/Img_0_'+str(i)+'.fits',image, clobber=True)
-		image = cropAux(image)
+		border, image = cropAux(image)
 		fits.writeto(outputDir+'/Img_1_'+str(i)+'.fits',image, clobber=True)
 
 
