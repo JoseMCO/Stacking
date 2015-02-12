@@ -21,7 +21,7 @@ def cropAux (originalData):
 				total+=originalData[i,j]
 				ntotal+=1
 			else:
-				data[i,j] = -1
+				data[i,j] = 0
 
 	minFilter = total/ntotal
 
@@ -94,6 +94,25 @@ def cropAux (originalData):
 
 	minFilter = total/ntotal
 
+	maxy = maxx = -1
+	miny = minx = width+height
+
+	for i in xrange(0,height):
+		for j in xrange(0,width):
+			if data[i,j] < maxv or originalData[i,j] < minFilter:
+				data[i, j] = 0
+			else:
+				data[i, j] = originalData[i,j]
+
+				if i < miny:
+					miny = i
+				if i > maxy:
+					maxy = i
+				if j < minx:
+					minx = j
+				if j > maxx:
+					maxx = j
+
 	newHeight = maxy - miny
 	newWidth = maxx - minx
 
@@ -103,7 +122,7 @@ def cropAux (originalData):
 	for i in xrange(miny,maxy+1): 
 		line = []
 		for j in xrange(minx,maxx+1):
-			if data[i,j] < maxv or originalData[i,j] < minFilter:
+			if data[i,j] <= 0:
 				newdata[i-miny, j-minx] = 0
 			else:
 				newdata[i-miny, j-minx] = originalData[i,j]

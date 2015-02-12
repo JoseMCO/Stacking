@@ -24,8 +24,7 @@ def scale_aux(matriz, NAXIS1, NAXIS2, razon):
 
         for x in range(0,NAXIS1):
             for y in range(0,NAXIS2):
-
-                	matriz_final[x*round(razon)][y*round(razon)] = matriz[y][x]
+                matriz_final[x*round(razon)][y*round(razon)] = matriz[y][x]
 
     x = y = 0
     razon = int(round(razon))
@@ -75,7 +74,7 @@ def scale(outputDir, maxSize):
     for i in xrange(0,len(data)):
         image = fits.getdata(data[i])
         h,w = image.shape
-        r = (maxSize[0]*maxSize[1])/(h*w) # NO SE COMO SE CALCULA :C
+        r = (maxSize[0])/(h) # NO SE COMO SE CALCULA :C
 
         print "Scale: "+'/Img_2_'+str(i)+'.fits'
 
