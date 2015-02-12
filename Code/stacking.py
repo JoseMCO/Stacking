@@ -46,7 +46,7 @@ def stacking(maxHeight,maxWidth,outputDir):
 	for x in range(maxWidth):
 		for y in range(maxHeight):
 
-			finalData[x][y] = float(finalData[x][y]/length)
+			finalData[x][y] = float(finalData[x][y])/float(length)
 
 	print "Stack: Done."	
 	fits.writeto(outputDir+'/Img_5_final.fits', finalData, clobber=True)
