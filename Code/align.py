@@ -44,10 +44,10 @@ def align(outputDir):
 
 		if newData.shape[0] > maxHeight:
 			print "Aling: "+'/Img_3_'+str(i)+'.fits'
-			fits.writeto(outputDir+'/Img_4'+str(i)+'.fits', rt.rotate_image(newData, 270),header ,clobber=True)
+			fits.writeto(outputDir+'/Img_4_'+str(i)+'.fits', rt.rotate_image(newData, 270),header ,clobber=True)
 		else:
 			print "Aling: "+'/Img_3_'+str(i)+'.fits'
-			fits.writeto(outputDir+'/Img_4'+str(i)+'.fits', newData,header ,clobber=True)
+			fits.writeto(outputDir+'/Img_4_'+str(i)+'.fits', newData,header ,clobber=True)
 			
 	# st.stacking(len(data),maxHeight,maxWidth,inputDir,outputDir)
 	# for i in xrange(0,nimages):

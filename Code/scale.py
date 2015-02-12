@@ -75,14 +75,15 @@ def scale(outputDir, maxSize):
         image = fits.getdata(data[i])
         h,w = image.shape
 
-        propHeight = float(maxSize[0])/float(h)
-        propWidth = float(maxSize[1])/float(w)
-        r = 0
-        if propHeight >= propWidth:
-            r = propHeight
-        elif propHeight <= propWidth:
-            r = propWidth
-        # r = float((maxSize[0]*maxSize[1]))/float((h*w)) # NO SE COMO SE CALCULA :C
+        # propHeight = float(maxSize[0])/float(h)
+        # propWidth = float(maxSize[1])/float(w)
+        # r = 0
+        # if propHeight >= propWidth:
+        #     r = propHeight
+        # elif propHeight <= propWidth:
+        #     r = propWidth
+        r = float(maxSize[1])/float(w) # NO SE COMO SE CALCULA :C
+        print maxSize[1], float(w), r
 
         print "Scale: "+'/Img_2_'+str(i)+'.fits'
 

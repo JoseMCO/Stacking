@@ -24,8 +24,8 @@ def stack(inputDir,outputDir):
 	border = cr.crop(inputDir, outputDir)
 	maxSize = rt.rotate(outputDir, border)
 	sc.scale(outputDir, maxSize)
-	info = al.align(outputDir)
-	st.stacking(info[0],info[1],outputDir)
+	# info = al.align(outputDir)
+	# st.stacking(info[0],info[1],outputDir)
 
 def aux(inputDir,outputDir):
 	data = glob.glob(inputDir+'/*.fits')
@@ -49,4 +49,4 @@ def aux(inputDir,outputDir):
 
 # fits.writeto('../FITS/output_file.fits', rt.rotate_image(data, 45), clobber=True)
 
-# stack("/home/jose/Documents/LIRAE/Practica/stacking/FITS/Inputs/B","/home/jose/Documents/LIRAE/Practica/stacking/FITS/Outputs")
+stack("/home/jose/Documents/LIRAE/Practica/stacking/FITS/Inputs/B","/home/jose/Documents/LIRAE/Practica/stacking/FITS/Outputs")
