@@ -139,18 +139,20 @@ def crop(inputDir, outputDir):
 	data = glob.glob(inputDir+'/*.fits')
 	borders = []
 	for i in xrange(0,len(data)):
-	# for i in xrange(0,1):
+	# for i in xrange(0,2):
 		name = data[i].split('/')[-1].split('.')[0]
 		image = fits.getdata(data[i])
 		if isinstance(image, list):
 			image = image[0]
 
-		print "Crop: "+'/Img_0_'+str(i)+'.fits'
+		print "Crop: "+'/Img_0_'+str(i)+'.fits',
 
 		fits.writeto(outputDir+'/Img_0_'+str(i)+'.fits',image, clobber=True)
 		border, image = cropAux(image)
 		fits.writeto(outputDir+'/Img_1_'+str(i)+'.fits',image, clobber=True)
 		borders.append(border)
+		
+		print "Done."
 	return borders
 
 

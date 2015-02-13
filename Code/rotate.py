@@ -64,15 +64,17 @@ def rotate(outputDir, border):
 	maxHeight = 0
 	maxWidth = 0
 	data = sorted(glob.glob(outputDir+'/Img_1_*.fits'))
-	print data
 	for i in xrange(0,len(data)):
 		image = fits.getdata(data[i])
 		points = fartestPoints(border[i])
 		image = rotate_image(image,theta(points))
 
-		print "Rotate: "+'/Img_1_'+str(i)+'.fits'
+		print "Rotate: "+'/Img_1_'+str(i)+'.fits',
 
 		fits.writeto(outputDir+'/Img_2_'+str(i)+'.fits',image, clobber=True)
+		
+		print "Done."
+
 		h,w = image.shape
 		if h > maxHeight:
 			maxHeight = h
