@@ -49,5 +49,5 @@ def aux(inputDir,outputDir):
 
 # fits.writeto('../FITS/output_file.fits', rt.rotate_image(data, 45), clobber=True)
 
-stack("/home/jose/Documents/LIRAE/Practica/stacking/FITS/Inputs/B","/home/jose/Documents/LIRAE/Practica/stacking/FITS/Outputs")
+# stack("/home/jose/Documents/LIRAE/Practica/stacking/FITS/Inputs/B","/home/jose/Documents/LIRAE/Practica/stacking/FITS/Outputs")
 # sc.scale("/home/jose/Documents/LIRAE/Practica/stacking/FITS/Outputs", (138,162))
