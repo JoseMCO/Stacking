@@ -148,24 +148,12 @@ def crop(inputDir, outputDir):
 		if isinstance(image, list):
 			image = image[0]
 
-		print "Crop: "+'/Img_0_'+str(i)+'.fits',
+		print "Crop: "+'/Img_0_'+str(i)+'.fits'
 
 		fits.writeto(outputDir+'/Img_0_'+str(i)+'.fits',image, clobber=True)
 		border, image = cropAux(image)
 		fits.writeto(outputDir+'/Img_1_'+str(i)+'.fits',image, clobber=True)
 		borders.append(border)
-		img = pyfits.open(outputDir+'/Img_1_'+str(i)+'.fits')
-		sci = img[4].data
-		sci = sci[700:1399, 2000:2699]
-		tam = sci.shape
-		pylab.clf()
-		pylab.gray()
-		pylab.imshow(sci, vmin = 0, vmax = 100)
-
-		pylab.xlabel('x pixels')
-		pylab.ylabel('y pixels')
-		pylab.ylim([0, tam[0]])
-		pylab.xlim([0, tam[1]])
 		print "Done."
 	return borders
 
