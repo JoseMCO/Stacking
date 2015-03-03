@@ -36,18 +36,3 @@ def aux(inputDir,outputDir):
 	image2 = fits.getdata(data[1])
 	cm.compare(image1, image2)
 	
-# data = [0]*4
-# header =[0]*4
-# name = "image"
-# for i in xrange(0,4):
-
-# 		cr.crop("../FITS/Inputs/"+name+str(i)+".fits", i)
-
-
-# data = fits.getdata("../FITS/Inputs/image0.fits")
-# al.align("image",4)
-
-# fits.writeto('../FITS/output_file.fits', rt.rotate_image(data, 45), clobber=True)
-
-# stack("/home/jose/Documents/LIRAE/Practica/stacking/FITS/Inputs/B","/home/jose/Documents/LIRAE/Practica/stacking/FITS/Outputs")
-# sc.scale("/home/jose/Documents/LIRAE/Practica/stacking/FITS/Outputs", (138,162))

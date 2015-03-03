@@ -1,5 +1,7 @@
 from astropy.io import fits
 import numpy as np
+import pylab
+import pyfits
 import glob
 
 def cropAux (originalData):
@@ -138,8 +140,9 @@ def cropAux (originalData):
 def crop(inputDir, outputDir):
 	data = glob.glob(inputDir+'/*.fits')
 	borders = []
+
 	for i in xrange(0,len(data)):
-	# for i in xrange(0,2):
+
 		name = data[i].split('/')[-1].split('.')[0]
 		image = fits.getdata(data[i])
 		if isinstance(image, list):
@@ -151,44 +154,18 @@ def crop(inputDir, outputDir):
 		border, image = cropAux(image)
 		fits.writeto(outputDir+'/Img_1_'+str(i)+'.fits',image, clobber=True)
 		borders.append(border)
-		
+		img = pyfits.open(outputDir+'/Img_1_'+str(i)+'.fits')
+		sci = img[4].data
+		sci = sci[700:1399, 2000:2699]
+		tam = sci.shape
+		pylab.clf()
+		pylab.gray()
+		pylab.imshow(sci, vmin = 0, vmax = 100)
+
+		pylab.xlabel('x pixels')
+		pylab.ylabel('y pixels')
+		pylab.ylim([0, tam[0]])
+		pylab.xlim([0, tam[1]])
 		print "Done."
 	return borders
 
-
-	# data = glob.glob("../FITS/I/*.fits")
-
-	# for i in xrange(0,len(data)):
-	# 	print data[i], i
-	# 	data[i] = fits.getdata(data[i])
-
-	# height = width = -1
-	# maxs = []
-	# for x in xrange(0,len(data)):
-	# 	h = len(data[x])
-	# 	w = len(data[x][0])
-	# 	xmax = ymax = vmax = -1;
-	# 	for i in xrange(0,h):
-	# 		for j in xrange(0,w):
-	# 			if data[x][i,j] > vmax:
-	# 				ymax = i
-	# 				xmax = j
-	# 				vmax = data[x][i,j]
-	# 	maxs.append([ymax, xmax])
-	# 	h = ymax*2+1 if ( abs(ymax-h) < ymax ) else abs(ymax-h)*2+1
-	# 	w = xmax*2+1 if ( abs(xmax-h) < xmax ) else abs(xmax-h)*2+1
-	# 	if height < h:
-	# 		height = h
-	# 	if width < w:
-	# 		width = w
-
-	# newdata = np.ndarray(shape=(height,width), dtype=float)
-
-	# h = (height-1)/2
-	# w = (width-1)/2
-	# for x in xrange(0,len(data)):
-	# 	for i in xrange(0,len(data[x])):
-	# 		for j in xrange(0,len(data[x][0])):
-	# 			newdata[i+(h-maxs[x][0])/2,j+(w-maxs[x][1])/2] += data[x][i,j] 
-
-	# fits.writeto('../FITS/output_file.fits', newdata, clobber=True)
