@@ -2,6 +2,11 @@ from astropy.io import fits
 import numpy as np
 import glob
 import math
+from PIL import Image
+import pyfits
+import numpy as np
+import pylab as py
+import img_scale
 
 def rotate_coords(x, y, theta, ox, oy):
 	s, c = np.sin(theta), np.cos(theta)
@@ -64,6 +69,7 @@ def rotate(outputDir, border):
 	maxHeight = 0
 	maxWidth = 0
 	data = sorted(glob.glob(outputDir+'/Img_1_*.fits'))
+	dir_png = outputDir+'/PNG_Images' 
 	for i in xrange(0,len(data)):
 		image = fits.getdata(data[i])
 		points = fartestPoints(border[i])
@@ -72,6 +78,16 @@ def rotate(outputDir, border):
 		print "Rotate: "+'/Img_1_'+str(i)+'.fits',
 
 		fits.writeto(outputDir+'/Img_2_'+str(i)+'.fits',image, clobber=True)
+
+		j_img = pyfits.getdata(outputDir+'/Img_2_'+str(i)+'.fits')
+		img = np.zeros((j_img.shape[0], j_img.shape[1]), dtype=float)
+		img[:,:] = img_scale.sqrt(j_img, scale_min=0, scale_max=10000)
+		py.clf()
+		py.imshow(img, aspect='equal')
+		py.title('Rotate Img_2_'+str(i))
+		py.savefig(dir_png+'/Img_2_'+str(i)+'.png')
+		img = Image.open(dir_png+'/Img_2_'+str(i)+'.png')
+		img.show()
 		
 		print "Done."
 
